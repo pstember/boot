@@ -61,6 +61,7 @@ COMPLETION_WAITING_DOTS="true"
 plugins=(
   git
   zsh-256color
+  zsh_reload
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -70,6 +71,13 @@ source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
+NPM_PACKAGES="${HOME}/.npm-packages"
+
+export PATH="$NPM_PACKAGES/bin:$PATH"
+
+# Unset manpath so we can inherit from /etc/manpath via the `manpath` command
+unset MANPATH # delete if you already modified MANPATH elsewhere in your config
+export MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -170,46 +178,53 @@ ffe () { /usr/bin/find . -name '*'"$@" ; }  # ffe:      Find file whose name end
 
 TERM=xterm-256color
 
-
 prompt_zsh_battery_level() {
-    percentage=`ioreg -n AppleSmartBattery -r | awk '$1~/Capacity/{c[$1]=$3} END{OFMT="%.2f%"; max=c["\"MaxCapacity\""]; print (max>0? 100*c["\"CurrentCapacity\""]/max: "?")}'`
-    local color='%F{009}'
-    local symbol="\uf00d"
-if [ $(bc <<< "scale=2 ; $percentage<25") = '1' ]
-    then symbol="\uf244" ; color='%F{009}' ;
-        #Less than 25
-        fi  
-if [ $(bc <<< "scale=2 ; $percentage>=15") = '1' ] && [ $(bc <<< "scale=2 ; $percentage<25") = '1' ]
-    # red = 009
-    then symbol='\uf243' ; color='%F{009}' ;
-fi
-if [ $(bc <<< "scale=2 ; $percentage>=25") = '1' ] && [ $(bc <<< "scale=2 ; $percentage<35") = '1' ]  
-    # orange = 214
-    then symbol="\uf242" ; color='%F{214}' ;
-fi
-if [ $(bc <<< "scale=2 ; $percentage>=35") = '1' ] && [ $(bc <<< "scale=2 ; $percentage<50") = '1' ]  
-    # LightGoldenrod2 = 221
-    then symbol="\uf242" ; color='%F{221}' ;
-fi
-if [ $(bc <<< "scale=2 ; $percentage>=50") = '1' ] && [ $(bc <<< "scale=2 ; $percentage<65") = '1' ]
-    # yellow = 011
-    then symbol="\uf241" ; color='%F{011}' ;
-fi  
-if [ $(bc <<< "scale=2 ; $percentage>=65") = '1' ] && [ $(bc <<< "scale=2 ; $percentage<80") = '1' ]
-    # DarkOliveGreen2 = 155
-    then symbol="\uf241" ; color='%F{155}' ;
-fi  
-if [ $(bc <<< "scale=2 ; $percentage>=80") = '1' ]
-    # green = 010
-    then symbol="\uf240" ; color='%F{010}' ;
-fi
-pmset -g batt | grep "discharging" >& /dev/null
-if [ $? -eq 0 ]; then    
-    true;
-else ;
-   local symbol="\uf1e6"
-fi
-echo -n "%{$color%}$percentage $symbol" 
+  percentage=`ioreg -n AppleSmartBattery -r | awk '$1~/Capacity/{c[$1]=$3} END{OFMT="%.2f%"; max=c["\"MaxCapacity\""]; print (max>0? 100*c["\"CurrentCapacity\""]/max: "?")}'`
+  local color='%F{196}'
+  local symbol="\uf00d"
+  timeremainingprint='∞'
+
+  local smart_battery_status="$(ioreg -rc "AppleSmartBattery")"
+  if [[ $(echo $smart_battery_status | grep -c '^.*"ExternalConnected"\ =\ No') -eq 1 ]] ; then
+    timeremaining=$(echo $smart_battery_status | grep '^.*"AvgTimeToEmpty"\ =\ ' | sed -e 's/^.*"AvgTimeToEmpty"\ =\ //')
+    if [ $timeremaining -gt 720 ] ; then
+      timeremainingprint='::'
+    else
+      timeremainingprint="$((timeremaining / 60)):$((timeremaining % 60))"
+    fi
+  fi
+
+  if [ $(bc <<< "scale=2 ; $percentage>=15") = '1' ] && [ $(bc <<< "scale=2 ; $percentage<25") = '1' ]
+      # red = 009
+      then symbol='\uf243' ; color='%F{009}' ;
+  fi
+  if [ $(bc <<< "scale=2 ; $percentage>=25") = '1' ] && [ $(bc <<< "scale=2 ; $percentage<35") = '1' ]  
+      # orange = 214
+      then symbol="\uf242" ; color='%F{214}' ;
+  fi
+  if [ $(bc <<< "scale=2 ; $percentage>=35") = '1' ] && [ $(bc <<< "scale=2 ; $percentage<50") = '1' ]  
+      # LightGoldenrod2 = 221
+      then symbol="\uf242" ; color='%F{221}' ;
+  fi
+  if [ $(bc <<< "scale=2 ; $percentage>=50") = '1' ] && [ $(bc <<< "scale=2 ; $percentage<65") = '1' ]
+      # yellow = 011
+      then symbol="\uf241" ; color='%F{011}' ;
+  fi  
+  if [ $(bc <<< "scale=2 ; $percentage>=65") = '1' ] && [ $(bc <<< "scale=2 ; $percentage<80") = '1' ]
+      # DarkOliveGreen2 = 155
+      then symbol="\uf241" ; color='%F{155}' ;
+  fi  
+  if [ $(bc <<< "scale=2 ; $percentage>=80") = '1' ]
+      # green = 010
+      then symbol="\uf240" ; color='%F{010}' ;
+  fi
+  pmset -g batt | grep "discharging" >& /dev/null
+  if [ $? -eq 0 ]; then    
+      true;
+  else ;
+     local symbol="\uf1e6"
+  fi
+  echo -n " %{$color%}$percentage $symbol  ($timeremainingprint)" 
 }
 
 
@@ -286,9 +301,6 @@ POWERLEVEL9K_CUSTOM_INTERNET_SIGNAL="zsh_internet_signal"
 POWERLEVEL9K_CUSTOM_INTERNET_SIGNAL_BACKGROUND="black"
 
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context ssh root_indicator dir dir_writable vcs)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time custom_internet_signal zsh_battery_level)
-
-alias imi="cd ~pstember/OneDrive\ -\ IMImobile"
-alias clients="cd ~pstember/OneDrive\ -\ IMImobile/Clients"
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs time custom_internet_signal zsh_battery_level custom_battery_time_remaining)
 
 cd ~
