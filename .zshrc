@@ -34,6 +34,10 @@ ZSH_THEME="powerlevel9k/powerlevel9k"
 
 # Uncomment the following line to disable auto-setting terminal title.
 # DISABLE_AUTO_TITLE="true"
+# Uncomment the following lines to enable the tab to be renamed
+# tt () {
+#     echo -ne "\033];$@\007"
+# }
 
 # Uncomment the following line to enable command auto-correction.
 # ENABLE_CORRECTION="true"
@@ -74,10 +78,19 @@ source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 NPM_PACKAGES="${HOME}/.npm-packages"
 
 export PATH="$NPM_PACKAGES/bin:$PATH"
+export PATH="${HOME}/bin:$PATH"
 
 # Unset manpath so we can inherit from /etc/manpath via the `manpath` command
 unset MANPATH # delete if you already modified MANPATH elsewhere in your config
 export MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
+
+# Ruby set-up
+eval "$(rbenv init -)"
+
+# Go set-up
+export GOPATH="${HOME}/.go"
+export PATH="$PATH:${GOPATH}/bin:${GOROOT}/bin"
+test -d "${GOPATH}" || mkdir "${GOPATH}"
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -106,6 +119,12 @@ export MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
 
 DEFAULT_USER="pstember"
 
+# Add function to set title of the tab (could be useful for demo)
+
+function set-title(){
+  TITLE="\[\e]2;$*\a\]"
+  echo -ne ${TITLE}
+}
 
 
 #   -----------------------------
