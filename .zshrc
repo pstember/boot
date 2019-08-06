@@ -34,10 +34,11 @@ ZSH_THEME="powerlevel9k/powerlevel9k"
 
 # Uncomment the following line to disable auto-setting terminal title.
 # DISABLE_AUTO_TITLE="true"
-# Uncomment the following lines to enable the tab to be renamed
-# tt () {
-#     echo -ne "\033];$@\007"
-# }
+# The following lines to enable the tab to be renamed
+ tt () {
+     DISABLE_AUTO_TITLE="true"
+     echo -ne "\033];$@\007"
+ }
 
 # Uncomment the following line to enable command auto-correction.
 # ENABLE_CORRECTION="true"
@@ -126,6 +127,14 @@ function set-title(){
   echo -ne ${TITLE}
 }
 
+alias snykUpdate='npm i -g snyk'
+# brew install python3
+# cd ~
+# mkdir ~/.virtualenvs
+# python3 -m venv ~/.virtualenvs/myvenv
+source ~/.virtualenvs/myvenv/bin/activate # Only use this after setting up Python
+
+alias mongod='mongod --config /usr/local/etc/mongod.conf'
 
 #   -----------------------------
 #   2.  MAKE TERMINAL BETTER
