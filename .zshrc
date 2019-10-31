@@ -1,13 +1,22 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+# Add profiling run `zprof`
+# zmodload zsh/zprof
+
+# to avoid to have ZSH screaming when going sudo
+# ZSH_DISABLE_COMPFIX=true
+
 # Path to your oh-my-zsh installation.
-export ZSH=/Users/pstember/.oh-my-zsh
+export ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="powerlevel9k/powerlevel9k"
+#ZSH_THEME="spaceship"
+#SPACESHIP_KUBECONTEXT_SHOW=false
+#SPACESHIP_VENV_SHOW=false
 
 # Set list of themes to load
 # Setting this variable when ZSH_THEME=random
@@ -67,11 +76,18 @@ plugins=(
   git
   zsh-256color
   zsh_reload
+  kubectl
+  docker
+  docker-compose
+  kubetail
 )
 
 source $ZSH/oh-my-zsh.sh
-source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# brew install zsh-syntax-highlighting
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+# gem install colorls
 
 # User configuration
 
@@ -128,6 +144,13 @@ function set-title(){
 }
 
 alias snykUpdate='npm i -g snyk'
+alias ktilt='/usr/local/bin/tilt'
+alias tiltUpdate= 'brew update && brew upgrade windmilleng/tap/tilt'
+
+alias cat='bat'
+alias ping='prettyping --nolegend'
+alias preview="fzf --preview 'bat --color \"always\" {}'"
+
 # brew install python3
 # cd ~
 # mkdir ~/.virtualenvs
@@ -144,12 +167,15 @@ alias cp='cp -iv'                           # Preferred 'cp' implementation
 alias mv='mv -iv'                           # Preferred 'mv' implementation
 alias mkdir='mkdir -pv'                     # Preferred 'mkdir' implementation
 alias ll='ls -FGlAhp'                       # Preferred 'ls' implementation
+alias lss='colorls -Ah --sort-dirs --git-status'                       # Preferred 'colorls' implementation
+alias lll='colorls -A1h --sort-dirs --git-status'                       # Preferred 'colorls' implementation
+alias ltt='colorls --report --tree=2 --git-status'                       # Preferred 'colorls' implementation
 alias la='ls -FGAhp'                       # Preferred 'ls' implementation
 alias less='less -FSRXc'                    # Preferred 'less' implementation
 # cd() { builtin cd "$@"; ll; }               # Always list directory contents upon 'cd'
 alias cd..='cd ../'                         # Go back 1 directory level (for fast typers)
 # alias ..='cd ../'                           # Go back 1 directory level
-alias ...='cd ../../'                       # Go back 2 directory levels
+# alias ...='cd ../../'                       # Go back 2 directory levels
 alias .3='cd ../../../'                     # Go back 3 directory levels
 alias .4='cd ../../../../'                  # Go back 4 directory levels
 alias .5='cd ../../../../../'               # Go back 5 directory levels
@@ -158,7 +184,6 @@ alias edit='subl'                           # edit:         Opens any file in su
 alias f='open -a Finder ./'                 # f:            Opens current directory in MacOS Finder
 alias ~="cd ~"                              # ~:            Go Home
 alias c='clear'                             # c:            Clear terminal display
-alias which='type -all'                     # which:        Find executables
 alias path='echo -e ${PATH//:/\\n}'         # path:         Echo all executable Paths
 alias show_options='shopt'                  # Show_options: display bash options settings
 alias fix_stty='stty sane'                  # fix_stty:     Restore terminal settings when screwed up
@@ -215,11 +240,7 @@ prompt_zsh_battery_level() {
   local smart_battery_status="$(ioreg -rc "AppleSmartBattery")"
   if [[ $(echo $smart_battery_status | grep -c '^.*"ExternalConnected"\ =\ No') -eq 1 ]] ; then
     timeremaining=$(echo $smart_battery_status | grep '^.*"AvgTimeToEmpty"\ =\ ' | sed -e 's/^.*"AvgTimeToEmpty"\ =\ //')
-    if [ $timeremaining -gt 720 ] ; then
-      timeremainingprint='::'
-    else
-      timeremainingprint="$((timeremaining / 60)):$((timeremaining % 60))"
-    fi
+    timeremainingprint="$((timeremaining / 60)):$((timeremaining % 60))"
   fi
 
   if [ $(bc <<< "scale=2 ; $percentage>=15") = '1' ] && [ $(bc <<< "scale=2 ; $percentage<25") = '1' ]
@@ -306,7 +327,7 @@ zsh_internet_signal(){
 }
 
 POWERLEVEL9K_MODE='nerdfont-complete'
-POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
+POWERLEVEL9K_SHORTEN_DIR_LENGTH=3
 POWERLEVEL9K_SHORTEN_DELIMITER="..."
 #POWERLEVEL9K_SHORTEN_STRATEGY="truncate_to_unique"
 
@@ -315,20 +336,33 @@ POWERLEVEL9K_DIR_WRITABLE_FORBIDDEN_BACKGROUND="009"
 POWERLEVEL9K_DIR_HOME_BACKGROUND="cyan"
 #POWERLEVEL9K_DIR_HOME_FOREGROUND="white"
 POWERLEVEL9K_DIR_HOME_SUBFOLDER_BACKGROUND="cyan"
-#POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND="cyan"
+#POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND="red"
 POWERLEVEL9K_DIR_DEFAULT_BACKGROUND="cyan"
 #POWERLEVEL9K_DIR_DEFAULT_FOREGROUND="cyan"
 
-
 POWERLEVEL9K_HOME_ICON=$'\uf015'
-POWERLEVEL9K_HOME_SUB_ICON="$(print_icon "HOME_ICON")"
+POWERLEVEL9K_HOME_SUB_ICON=$'\ufc6e'
 #POWERLEVEL9K_DIR_PATH_SEPARATOR=" $(print_icon "LEFT_SUBSEGMENT_SEPARATOR") "
 #POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER=true
 
 POWERLEVEL9K_CUSTOM_INTERNET_SIGNAL="zsh_internet_signal"
 POWERLEVEL9K_CUSTOM_INTERNET_SIGNAL_BACKGROUND="black"
 
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context ssh root_indicator dir dir_writable vcs)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs time custom_internet_signal zsh_battery_level custom_battery_time_remaining)
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
+  context
+  ssh
+  root_indicator
+  dir
+  dir_writable
+  vcs
+  )
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
+  status
+  root_indicator
+  background_jobs
+  time
+  custom_internet_signal
+  zsh_battery_level
+  )
 
 cd ~
