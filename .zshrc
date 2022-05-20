@@ -16,6 +16,8 @@ export ZSH="/Users/pstember/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+
+# git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
@@ -62,6 +64,8 @@ plugins=(
   docker
   docker-compose
   httpie
+  terraform
+  aws
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -152,7 +156,7 @@ trash () { command mv "$@" ~/.Trash ; }     # trash:        Moves a file to the 
 # brew install exa
 if [ -x "$(command -v exa)" ]; then
     alias ls="exa --icons"
-    alias la="exa --long --all --group --icons"
+    alias la="exa --long --all --icons --group-directories-first -h --git --no-filesize"
     alias lt="exa --tree --level=2 --icons"
 fi
 
@@ -162,10 +166,31 @@ fi
 # brew install mcfly
 eval "$(mcfly init zsh)"
 
+# brew install bat
+# brew install prettyping
+alias cat='bat'
+alias ping='prettyping --nolegend'
+
+
+
 
 #   -----------------------------
 #   4.  Custom env
 #   -----------------------------
+
+# INCREASE HISTORY SIZE
+
+# The file where the history is stored
+HISTFILE="$HOME/.zsh_history"
+# Number of events loaded into memory
+HISTSIZE=100000000
+# Number of events stored in the zsh history file
+SAVEHIST=100000000
+# Do not save duplicate commands to history
+setopt HIST_IGNORE_ALL_DUPS
+# Do not find duplicate command when searching
+setopt HIST_FIND_NO_DUPS
+
 
 alias ktilt='/usr/local/bin/tilt'
 
