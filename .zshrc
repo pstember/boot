@@ -71,9 +71,9 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 # brew install zsh-syntax-highlighting
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # brew install zsh-autosuggestions
-source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 
 #   ---------------------------
@@ -207,6 +207,7 @@ unset MANPATH # delete if you already modified MANPATH elsewhere in your config
 export MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
 
 # Ruby set-up
+# brew install rbenv
 eval "$(rbenv init -)"
 
 # Go set-up
