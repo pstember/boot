@@ -75,7 +75,6 @@ source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # brew install zsh-autosuggestions
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-
 #   ---------------------------
 #   2.  User configuration
 #   ---------------------------
@@ -168,6 +167,7 @@ eval "$(mcfly init zsh)"
 
 # brew install bat
 # brew install prettyping
+# brew install git-delta
 alias cat='bat'
 alias ping='prettyping --nolegend'
 
@@ -199,8 +199,9 @@ export PATH="$HOME/.node_modules_global/bin:$PATH"
 export PATH="${HOME}/bin:$PATH"
 
 export NVM_DIR="$HOME/.nvm"
-  [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-  [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+  [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
 
 # Unset manpath so we can inherit from /etc/manpath via the `manpath` command
 unset MANPATH # delete if you already modified MANPATH elsewhere in your config
@@ -216,8 +217,9 @@ export PATH="$PATH:${GOPATH}/bin:${GOROOT}/bin"
 test -d "${GOPATH}" || mkdir "${GOPATH}"
 
 
-export CPPFLAGS="-I/usr/local/opt/openjdk/include"
-export PATH="/usr/local/opt/openjdk/bin:$PATH"
+# brew install jdk
+export CPPFLAGS="-I/opt/homebrew/opt/openjdk/include"
+export PATH="/opt/homebrew/opt/openjdk/bin:${PATH}"
 
 # brew install python3
 # cd ~
