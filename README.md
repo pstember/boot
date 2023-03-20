@@ -194,8 +194,8 @@ Then add the two next lines in your `.zshrc` right below the plugins section
 
 ```bash
 source $ZSH/oh-my-zsh.sh # ALREADY EXIST IN THE FILE, add below
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 ```
 
 # Custom commands and aliases
