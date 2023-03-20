@@ -99,7 +99,7 @@ You want to have the `mensloLGS NF` font installed for this to look the best
 
 Now go through the configuration assistant and make it look the way you want.
 
-Done? Great, let's go and customize a bit further. Open the file `.p10k.zsh` and have a look around line 32. Here you can choose what you want the terminal to display on the right and left hand side.
+Done? Great, let's go and customize a bit further. Open the file `~/.p10k.zsh` and have a look around line 32. Here you can choose what you want the terminal to display on the right and left hand side.
 
 Here is what I selected for mine - More info about prompt [https://github.com/romkatv/powerlevel10k#batteries-included](https://github.com/romkatv/powerlevel10k#batteries-included)
 
