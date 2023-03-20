@@ -84,7 +84,7 @@ from your `.zshrc` file
 Then reload the config with
 
 ```bash
-omz reloa
+omz reload
 ```
 
 Now the powerlevel10k configuration assistant should kick in.
