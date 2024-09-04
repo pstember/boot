@@ -24,7 +24,7 @@ brew install --cask iterm2
 
 From this point, all commands should be run in iTerm2 (no specific reason besides building muscle memory)
 
-# ZSH, Oh My Zsh and PowerLevel10k
+# ZSH, Oh My Zsh and Oh my Posh
 
 Since 2019, macOS is shipping with ZSH as a default shell, so we will be building on this. To help us tweak things easily, we will use ***Oh My Zsh***
 
@@ -65,7 +65,7 @@ source $ZSH/oh-my-zsh.sh
 
 Before doing any kind of customization, let's add a theme that will get us 80% there 🎉
 
-Our theme of choice will be PowerLevel10k - [https://github.com/romkatv/powerlevel10k](https://github.com/romkatv/powerlevel10k)
+Our theme of choice will be Oh-My-Posh - [https://ohmyposh.dev/](https://ohmyposh.dev/)
 
 Our theme will only affect the red selection in the following screenshot
 
@@ -74,88 +74,22 @@ Our theme will only affect the red selection in the following screenshot
 To install it, run the following command
 
 ```bash
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+brew install jandedobbeleer/oh-my-posh/oh-my-posh
 ```
 
-And replace the `ZSH_THEME` value from `robbyrussell` to `powerlevel10k/powerlevel10k` 
-
-from your `.zshrc` file
-
-Then reload the config with
+And replace the line with `ZSH_THEME=robbyrussell` with the following from your `.zshrc` file 
 
 ```bash
-omz reload
-```
+eval "$(oh-my-posh init zsh --config ~/.config/ohmyposh/theme.toml)"
+``` 
 
-Now the powerlevel10k configuration assistant should kick in.
-
-<aside>
-⚠️ Yours might look different and if asked to install a font, select yes !
-You want to have the `mensloLGS NF` font installed for this to look the best
-
-</aside>
-
-![Screenshot 2021-11-01 at 17.21.28.png](How%20to%20get%20a%20fancy%20looking%20terminal%2088fe24af928246a39b2024580f1e5c11/Screenshot_2021-11-01_at_17.21.28.png)
-
-Now go through the configuration assistant and make it look the way you want.
-
-Done? Great, let's go and customize a bit further. Open the file `~/.p10k.zsh` and have a look around line 32. Here you can choose what you want the terminal to display on the right and left hand side.
-
-Here is what I selected for mine - More info about prompt [https://github.com/romkatv/powerlevel10k#batteries-included](https://github.com/romkatv/powerlevel10k#batteries-included)
+DO NOT FORGET to create the folder and copy the theme over, if you rather use the default one, remove `--config` and its value. Then reload the config with
 
 ```bash
-# The list of segments shown on the left. Fill it with the most important segments.
-  typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
-    # =========================[ Line #1 ]=========================
-  # os_icon                 # os identifier
-    context
-    ssh
-    root_indicator
-    dir                     # current directory
-    dir_writable
-    vcs                     # git status
-    # =========================[ Line #2 ]=========================
-    newline                 # \n
-    prompt_char             # prompt symbol
-  )
-
-  typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
-    # =========================[ Line #1 ]=========================
-    status                  # exit code of the last command
-    command_execution_time  # duration of the last command
-    root_indicator
-    background_jobs         # presence of background jobs
-    node_version          # node.js version
-    go_version            # go version (https://golang.org)
-    dotnet_version        # .NET version (https://dotnet.microsoft.com)
-    php_version           # php version (https://www.php.net/)
-    java_version          # java version (https://www.java.com/)
-    rbenv                   # ruby version from rbenv (https://github.com/rbenv/rbenv)
-    kubecontext             # current kubernetes context (https://kubernetes.io/)
-    terraform               # terraform workspace (https://www.terraform.io)
-    aws                     # aws profile (https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html)
-    aws_eb_env              # aws elastic beanstalk environment (https://aws.amazon.com/elasticbeanstalk/)
-    azure                   # azure account name (https://docs.microsoft.com/en-us/cli/azure)
-    gcloud                  # google cloud cli account and project (https://cloud.google.com/)
-    google_app_cred         # google application credentials (https://cloud.google.com/docs/authentication/production)
-    vim_shell               # vim shell indicator (:sh)
-    timewarrior             # timewarrior tracking status (https://timewarrior.net/)
-    taskwarrior             # taskwarrior task count (https://taskwarrior.org/)
-    # =========================[ Line #2 ]=========================
-    newline
-  )
+reset
 ```
 
-For Snyk Showcase, I would recommend you also set the following two variables
-
-- POWERLEVEL9K_STATUS_OK
-- POWERLEVEL9K_STATUS_ERROR
-
-to `true` to display the result of the last command when running a test. 
-
-Your terminal should now have the look that you want, for reference, mine looks like this
-
-![Screenshot 2021-11-01 at 17.53.39.png](How%20to%20get%20a%20fancy%20looking%20terminal%2088fe24af928246a39b2024580f1e5c11/Screenshot_2021-11-01_at_17.53.39.png)
+Now the theme should kick in and you are good to go 🎉🎉🎉
 
 # Plugins
 
