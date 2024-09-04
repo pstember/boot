@@ -1,27 +1,13 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 #   ---------------------------
-#   1.  Oh My Zsh basic config
+#   1.  Oh My ZSH and Oh My Posh basic config
 #   ---------------------------
-
-# Path to your oh-my-zsh installation.
-export ZSH="/Users/pstember/.oh-my-zsh"
-
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-
-# git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+eval "$(oh-my-posh init zsh --config ~/.config/ohmyposh/theme.toml)"
+
+# if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
+#  eval "$(oh-my-posh init zsh)"
+# fi
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -152,11 +138,11 @@ trash () { command mv "$@" ~/.Trash ; }     # trash:        Moves a file to the 
          fi
     }
 
-# brew install exa
-if [ -x "$(command -v exa)" ]; then
-    alias ls="exa --icons"
-    alias la="exa --long --all --icons --group-directories-first -h --git --no-filesize"
-    alias lt="exa --tree --level=2 --icons"
+# brew install eza
+if [ -x "$(command -v eza)" ]; then
+    alias ls="eza --icons"
+    alias la="eza --long --all --icons --group-directories-first -h --git --no-filesize"
+    alias lt="eza --tree --level=2 --icons"
 fi
 
 
@@ -171,7 +157,8 @@ eval "$(mcfly init zsh)"
 alias cat='bat'
 alias ping='prettyping --nolegend'
 
-
+# brew install thefuck
+eval $(thefuck --alias)
 
 
 #   -----------------------------
@@ -217,9 +204,9 @@ export PATH="$PATH:${GOPATH}/bin:${GOROOT}/bin"
 test -d "${GOPATH}" || mkdir "${GOPATH}"
 
 
-# brew install jdk
-export CPPFLAGS="-I/opt/homebrew/opt/openjdk/include"
-export PATH="/opt/homebrew/opt/openjdk/bin:${PATH}"
+# brew install jenv
+export PATH="$HOME/.jenv/bin:$PATH"
+eval "$(jenv init -)"
 
 # brew install python3
 # cd ~
@@ -229,4 +216,4 @@ source ~/.virtualenvs/myvenv/bin/activate # Only use this after setting up Pytho
 
 alias mongod='mongod --config /usr/local/etc/mongod.conf'
 
-DEFAULT_USER="pstember"
+DEFAULT_USER="philippe.stemberger"
