@@ -19,15 +19,15 @@ console_title_template = '{{ .Shell }} in {{ .Folder }}'
     type = 'path'
     style = 'diamond'
     leading_diamond = ''
-    powerline_symbol = ''
-    template = ' {{ if not .Writable }}{{ end}}  {{ path .Path .Location }} '
+    trailing_diamond = ''
+    template = ' {{ if not .Writable }}{{ end}} {{ path .Path .Location }} '
     background = 'p:orange'
     foreground = 'p:black'
 
     [blocks.segments.properties]
       style = 'agnoster_short'
       folder_icon = " \uf07b "
-      hone_icon = "\ue617"
+      home_icon = "\ue617"
       mapped_locations_enabled = true
 
       [blocks.segments.properties.mapped_locations]
@@ -72,6 +72,15 @@ console_title_template = '{{ .Shell }} in {{ .Folder }}'
     foreground = "#ffffff"
     background = "#FFA400"
     template = "  {{.Profile}}{{if .Region}}@{{.Region}}{{end}}"
+
+  [[blocks.segments]]
+    type = "az"
+    style = "diamond"
+    leading_diamond = ''
+    trailing_diamond = ''
+    foreground = "#000000"
+    background = "#9ec3f0"
+    template = "  {{ .EnvironmentName }}"
 
   [[blocks.segments]]
     type = "terraform"
@@ -146,13 +155,6 @@ console_title_template = '{{ .Shell }} in {{ .Folder }}'
       fetch_virtual_env = false
 
   [[blocks.segments]]
-    type = "kubectl"
-    style = "plain"
-    foreground = "#000000"
-    background = "#ebcc34"
-    template = " ﴱ {{.Context}}{{if .Namespace}} :: {{.Namespace}}{{end}} "
-
-  [[blocks.segments]]
     type = "helm"
     style = "plain"
     background = "#a7cae1"
@@ -191,6 +193,30 @@ console_title_template = '{{ .Shell }} in {{ .Folder }}'
 
   [tooltips.properties]
     display_default = true
+
+[[tooltips]]
+  type = "kubectl"
+  tips = [ "kubectl" ]
+  style = "diamond"
+  leading_diamond = ""
+  trailing_diamond = ""
+  foreground = "#000000"
+  background = "#ebcc34"
+  template = " ﴱ {{.Context}}{{if .Namespace}} :: {{.Namespace}}{{end}} "
+
+[[tooltips]]
+  type = "git"
+  tips = [ "git", "g" ]
+  style = "diamond"
+  foreground = "#193549"
+  background = "#fffb38"
+  leading_diamond = ""
+  trailing_diamond = ""
+  template = "{{ .HEAD }}{{ if .Staging.Changed }}  {{ .Staging.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Working.Changed }}  {{ .Working.String }}{{ end }}"
+
+  [tooltips.properties]
+  fetch_status = true
+  fetch_upstream_icon = true
 
 [transient_prompt]
   template = '<p:yellow,transparent></><,p:yellow> {{ .PWD }} </><p:yellow,transparent></> '
