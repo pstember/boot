@@ -16,10 +16,10 @@ To this
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-- ITerm2
+- WezTerm
 
 ```bash
-brew install --cask iterm2
+brew install --cask wezterm
 ```
 
 From this point, all commands should be run in iTerm2 (no specific reason besides building muscle memory)
