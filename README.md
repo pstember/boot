@@ -6,7 +6,7 @@ Let's go from this
 
 To this
 
-![Screenshot 2021-11-01 at 18.38.36.png](How%20to%20get%20a%20fancy%20looking%20terminal%2088fe24af928246a39b2024580f1e5c11/Screenshot_2021-11-01_at_18.38.36.png)
+![Screenshot 2021-11-01 at 18.38.36.png](How%20to%20get%20a%20fancy%20looking%20terminal%2088fe24af928246a39b2024580f1e5c11/Screenshot_2021-11-01_at_16.54.39.png)
 
 # Prerequisites
 
