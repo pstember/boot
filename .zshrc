@@ -2,7 +2,10 @@
 #   1.  Oh My ZSH and Oh My Posh basic config
 #   ---------------------------
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+# Path to your oh-my-zsh installation.
+export ZSH="/Users/pstember/.oh-my-zsh"
+
+# To customize prompt, check https://ohmyposh.dev/
 eval "$(oh-my-posh init zsh --config ~/.config/ohmyposh/theme.toml)"
 
 # if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
@@ -54,8 +57,7 @@ plugins=(
   aws
 )
 
-source $ZSH/oh-my-zsh.sh
-
+# source $ZSH/oh-my-zsh.sh
 # brew install zsh-syntax-highlighting
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # brew install zsh-autosuggestions
@@ -100,8 +102,8 @@ alias mkdir='mkdir -pv'                     # Preferred 'mkdir' implementation
 alias less='less -FSRXc'                    # Preferred 'less' implementation
 # cd() { builtin cd "$@"; ll; }               # Always list directory contents upon 'cd'
 alias cd..='cd ../'                         # Go back 1 directory level (for fast typers)
-# alias ..='cd ../'                           # Go back 1 directory level
-# alias ...='cd ../../'                       # Go back 2 directory levels
+alias ..='cd ../'                           # Go back 1 directory level
+alias ...='cd ../../'                       # Go back 2 directory levels
 alias .3='cd ../../../'                     # Go back 3 directory levels
 alias .4='cd ../../../../'                  # Go back 4 directory levels
 alias .5='cd ../../../../../'               # Go back 5 directory levels
@@ -178,8 +180,14 @@ setopt HIST_IGNORE_ALL_DUPS
 # Do not find duplicate command when searching
 setopt HIST_FIND_NO_DUPS
 
+# autocompletion using arrow keys (based on history)
+bindkey '\e[A' history-search-backward
+bindkey '\e[B' history-search-forward
+
 
 alias ktilt='/usr/local/bin/tilt'
+
+export PATH="/Applications/IntelliJ IDEA CE.app/Contents/MacOS:$PATH"
 
 # export MANPATH="/usr/local/man:$MANPATH"
 export PATH="$HOME/.node_modules_global/bin:$PATH"
@@ -189,6 +197,7 @@ export NVM_DIR="$HOME/.nvm"
   [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
   [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
+export NODE_EXTRA_CA_CERTS=~/.certs/Sonar-FGT-FW-TLS-Traffic-Inspection.cer
 
 # Unset manpath so we can inherit from /etc/manpath via the `manpath` command
 unset MANPATH # delete if you already modified MANPATH elsewhere in your config
@@ -198,6 +207,7 @@ export MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
 # brew install rbenv
 eval "$(rbenv init -)"
 
+# brew install go
 # Go set-up
 export GOPATH="${HOME}/.go"
 export PATH="$PATH:${GOPATH}/bin:${GOROOT}/bin"
@@ -207,6 +217,10 @@ test -d "${GOPATH}" || mkdir "${GOPATH}"
 # brew install jenv
 export PATH="$HOME/.jenv/bin:$PATH"
 eval "$(jenv init -)"
+# brew install javaj
+export PATH="~/Library/Application Support/Coursier/bin:$PATH"
+
+export CPPFLAGS="-I/opt/homebrew/opt/openjdk/include"
 
 # brew install python3
 # cd ~
@@ -215,5 +229,9 @@ eval "$(jenv init -)"
 source ~/.virtualenvs/myvenv/bin/activate # Only use this after setting up Python
 
 alias mongod='mongod --config /usr/local/etc/mongod.conf'
+
+######## SONAR CONFIG #######
+alias sonarqube="sonar-scanner -Dsonar.token=squ_4c1cc93c29edfb8290bb8f43459554aad9ff4f4d -Dsonar.host.url=https://pstember.eu.ngrok.io" 
+alias sonarcloud="sonar-scanner -Dsonar.token=25a3ce56cc6c47d3f2787e0b62896e3cbd18acea" 
 
 DEFAULT_USER="philippe.stemberger"
