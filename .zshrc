@@ -214,6 +214,7 @@ export PATH="$PATH:${GOPATH}/bin:${GOROOT}/bin"
 test -d "${GOPATH}" || mkdir "${GOPATH}"
 
 # brew install bpytop
+alias top=bpytop
 
 # brew install jenv
 export PATH="$HOME/.jenv/bin:$PATH"
