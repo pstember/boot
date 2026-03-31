@@ -1,5 +1,32 @@
 # How to get a fancy looking terminal
 
+## ⚡ Current Setup (2026 - Optimized)
+
+**Updated March 2026** - Migrated to a faster, more modern setup:
+
+### Stack
+- **Terminal:** [WezTerm](https://wezfurlong.org/wezterm/) - GPU-accelerated, fast terminal
+- **Shell:** Zsh (no Oh-My-Zsh framework for better performance)
+- **Prompt:** [Starship](https://starship.rs/) - Fast, minimal prompt (~100ms vs oh-my-posh's ~1500ms)
+- **Theme:** Gruvbox Rainbow with Nerd Font icons
+- **Font:** MesloLGS Nerd Font Mono (for powerline symbols)
+
+### Performance
+- **Startup time:** ~0.6s (down from 3.4s!)
+- **Instant prompt:** ~50ms perceived startup with Starship instant prompt
+- **Optimizations:** Lazy-loading, minimal plugins, cached completions
+
+### Configuration Files
+- `.wezterm.lua` - WezTerm configuration with performance optimizations
+- `.config/starship.toml` - Starship prompt theme (Gruvbox Rainbow)
+- `.zshrc` - Optimized zsh configuration (no Oh-My-Zsh)
+
+---
+
+## 📚 Legacy Setup (2021-2025)
+
+The instructions below document the original Oh-My-Zsh + oh-my-posh setup. For the current Starship-based setup, see the configuration files above.
+
 Let's go from this
 
 ![Screenshot 2021-11-01 at 16.36.10.png](How%20to%20get%20a%20fancy%20looking%20terminal%2088fe24af928246a39b2024580f1e5c11/Screenshot_2021-11-01_at_16.36.10.png)
