@@ -156,6 +156,16 @@ No Oh-My-Zsh framework overhead. Only essential plugins:
 - zsh-syntax-highlighting (command validation)
 - zsh-autosuggestions (history-based suggestions)
 
+### Initialization Order
+
+**IMPORTANT:** The `.zshrc` file follows a specific initialization order to prevent conflicts:
+
+1. All environment variables, paths, and aliases load first
+2. **zoxide** initializes near the end (before Starship)
+3. **Starship prompt** initializes last (must be final)
+
+This order is critical for zoxide to function correctly. If you modify `.zshrc` and see a zoxide configuration warning, ensure `eval "$(zoxide init zsh --cmd cd)"` appears just before the Starship initialization at the end of the file.
+
 ## 📁 Repository Structure
 
 ```

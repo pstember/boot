@@ -191,14 +191,6 @@ if command -v fd >/dev/null 2>&1; then
   alias find='fd'
 fi
 
-# brew install zoxide
-if command -v zoxide >/dev/null 2>&1; then
-  # Replace 'cd' with zoxide so you can use normal cd command
-  eval "$(zoxide init zsh --cmd cd)"
-  # Now 'cd' is smart and tracks frecency
-  # Use 'cdi' for interactive selection
-fi
-
 # brew install tldr
 # No alias needed, just install for quick command help
 
@@ -332,6 +324,15 @@ jenv() {
 alias pyenv='source ~/.virtualenvs/myvenv/bin/activate'
 
 alias mongod='mongod --config /usr/local/etc/mongod.conf'
+
+# brew install zoxide
+# Initialize zoxide (smart cd with frecency) - must be near the end
+if command -v zoxide >/dev/null 2>&1; then
+  # Replace 'cd' with zoxide so you can use normal cd command
+  eval "$(zoxide init zsh --cmd cd)"
+  # Now 'cd' is smart and tracks frecency
+  # Use 'cdi' for interactive selection
+fi
 
 # Initialize Starship prompt (MUST be at the end after everything loads)
 # This updates the instant prompt with fresh data
