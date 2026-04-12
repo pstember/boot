@@ -33,7 +33,6 @@ Install Homebrew if you haven't already:
 brew install --cask wezterm
 
 # Install Nerd Font for icons
-brew tap homebrew/cask-fonts
 brew install --cask font-meslo-lg-nerd-font
 ```
 
@@ -58,7 +57,7 @@ brew install git-delta     # Beautiful git diffs
 # Additional productivity tools
 brew install prettyping    # Pretty ping output
 brew install bpytop        # Resource monitor
-brew install tldr          # Simplified man pages
+brew install tlrc          # Simplified man pages
 
 # Zsh plugins
 brew install zsh-syntax-highlighting
