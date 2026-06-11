@@ -1,0 +1,12 @@
+# Font
+font-family = MesloLGS Nerd Font Mono
+font-size = 13
+
+# Window
+window-width = 120
+window-height = 28
+background-opacity = 1.0
+
+# Performance
+scrollback-limit = 10000
+frame-rate = 60

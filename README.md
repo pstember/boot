@@ -10,7 +10,7 @@ A blazing-fast, beautiful terminal configuration optimized for developer product
 
 ## 🎨 Stack
 
-- **Terminal:** [WezTerm](https://wezfurlong.org/wezterm/) - GPU-accelerated terminal
+- **Terminal:** [Ghostty](https://ghostty.org/) - Fast, native terminal
 - **Shell:** Zsh (vanilla, no Oh-My-Zsh framework)
 - **Prompt:** [Starship](https://starship.rs/) - Fast, customizable prompt
 - **Theme:** Gruvbox Dark with Nerd Font icons
@@ -29,8 +29,8 @@ Install Homebrew if you haven't already:
 ### 1. Terminal & Font
 
 ```bash
-# Install WezTerm
-brew install --cask wezterm
+# Install Ghostty
+brew install --cask ghostty
 
 # Install Nerd Font for icons
 brew install --cask font-meslo-lg-nerd-font
@@ -74,7 +74,8 @@ cd boot
 
 # Copy config files
 cp .zshrc ~/.zshrc
-cp .wezterm.lua ~/.wezterm.lua
+mkdir -p ~/.config/ghostty
+cp .config/ghostty/config ~/.config/ghostty/config
 mkdir -p ~/.config
 cp -r .config/starship.toml ~/.config/
 
@@ -84,7 +85,7 @@ source ~/.zshrc
 
 Or manually download:
 - [`.zshrc`](.zshrc) - Shell configuration
-- [`.wezterm.lua`](.wezterm.lua) - Terminal configuration
+- [`.config/ghostty/config`](.config/ghostty/config) - Terminal configuration
 - [`.config/starship.toml`](.config/starship.toml) - Prompt theme
 
 ## 🔧 Configuration Details
@@ -170,8 +171,9 @@ This order is critical for zoxide to function correctly. If you modify `.zshrc` 
 ```
 .
 ├── .zshrc                    # Shell configuration
-├── .wezterm.lua              # Terminal emulator config
 ├── .config/
+│   ├── ghostty/
+│   │   └── config            # Terminal emulator config
 │   └── starship.toml         # Prompt theme (Gruvbox)
 └── README.md                 # This file
 ```
@@ -184,7 +186,7 @@ Edit `~/.config/starship.toml` or browse [Starship presets](https://starship.rs/
 
 ### Change Terminal Colors
 
-Edit `.wezterm.lua` to change theme or adjust font size.
+Edit `~/.config/ghostty/config` to change theme or adjust font size.
 
 ### Add More Aliases
 
