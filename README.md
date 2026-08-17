@@ -53,18 +53,13 @@ This is a curated list (top-level installs only — dependencies resolve automat
 
 ### 4. Recreate local-only secrets
 
-`.zshrc` sources `~/.zsh_secrets`, which is **never** committed (this repo is public). Recreate it by hand from your password manager:
+`.zshrc` sources `~/.zsh_secrets` if present, which is **never** committed (this repo is public). These are workplace/context-specific tokens that don't belong in a generic public dotfiles repo and won't come to a new machine by default — recreate only what that machine actually needs:
 
 ```bash
 umask 077
-cat > ~/.zsh_secrets <<'EOF'
-export ARTIFACTORY_USERNAME="you@example.com"
-export ARTIFACTORY_PASSWORD="..."
-export ARTIFACTORY_NPM_AUTH=$(echo -n "${ARTIFACTORY_USERNAME}:${ARTIFACTORY_PASSWORD}" | base64)
-export PORTKEY_OPENAI_API_KEY="..."
-export SONARQUBE_CLI_TOKEN="..."
-EOF
+touch ~/.zsh_secrets
 chmod 600 ~/.zsh_secrets
+# then add whatever export lines this machine needs
 ```
 
 ### 5. Reload
@@ -93,7 +88,7 @@ cd ~/.local/share/chezmoi && brew bundle dump --file=Brewfile --force
 # that's just a dependency before committing, to keep the file lean.
 ```
 
-**Never** run `chezmoi add ~/.zshrc` blindly without checking for secrets first — this repo is public. `sonar analyze secrets <file>` (from the `sonarqube-cli` brew formula) catches hardcoded tokens before they hit a commit.
+**Never** run `chezmoi add ~/.zshrc` blindly without checking for secrets first — this repo is public. Run a secrets scanner (gitleaks, trufflehog, or equivalent) over the diff before committing.
 
 ## 🔧 Configuration Details
 
