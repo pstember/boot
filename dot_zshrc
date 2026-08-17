@@ -1,0 +1,372 @@
+#   ---------------------------
+#   1.  Shell Configuration (No Oh-My-Zsh)
+#   ---------------------------
+
+# Enable Starship instant prompt (makes shell feel instant!)
+# This MUST be at the very top, before anything that prints
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/starship/init.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/starship/init.zsh"
+fi
+
+# Speed up compinit by only checking cache once per day
+autoload -Uz compinit
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
+fi
+
+# Enable Docker completions (native zsh)
+if [ -d ~/.zsh/completion ]; then
+  fpath=(~/.zsh/completion $fpath)
+fi
+
+# Colored man pages (replaces colored-man-pages plugin)
+export LESS_TERMCAP_mb=$'\e[1;32m'     # begin bold
+export LESS_TERMCAP_md=$'\e[1;34m'     # begin blink
+export LESS_TERMCAP_me=$'\e[0m'        # reset bold/blink
+export LESS_TERMCAP_so=$'\e[01;33m'    # begin reverse video
+export LESS_TERMCAP_se=$'\e[0m'        # reset reverse video
+export LESS_TERMCAP_us=$'\e[1;4;31m'   # begin underline
+export LESS_TERMCAP_ue=$'\e[0m'        # reset underline
+
+# copypath function (replaces copypath plugin)
+function copypath {
+  print -n "${PWD}" | pbcopy
+}
+
+# copyfile function (replaces copyfile plugin)
+function copyfile {
+  [[ "$#" != 1 ]] && echo "Usage: copyfile <file>" && return 1
+  [[ ! -f "$1" ]] && echo "$1 is not a file" && return 1
+  cat "$1" | pbcopy
+}
+
+# brew install zsh-syntax-highlighting
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# brew install zsh-autosuggestions
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+#   ---------------------------
+#   2.  User configuration
+#   ---------------------------
+
+# export MANPATH="/usr/local/man:$MANPATH"
+
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+#
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
+
+
+#   -----------------------------
+#   3.  MAKE TERMINAL BETTER
+#   -----------------------------
+
+alias cp='cp -iv'                           # Preferred 'cp' implementation
+alias mv='mv -iv'                           # Preferred 'mv' implementation
+alias mkdir='mkdir -pv'                     # Preferred 'mkdir' implementation
+alias less='less -FSRXc'                    # Preferred 'less' implementation
+# cd() { builtin cd "$@"; ll; }               # Always list directory contents upon 'cd'
+alias cd..='cd ../'                         # Go back 1 directory level (for fast typers)
+alias ..='cd ../'                           # Go back 1 directory level
+alias ...='cd ../../'                       # Go back 2 directory levels
+alias .3='cd ../../../'                     # Go back 3 directory levels
+alias .4='cd ../../../../'                  # Go back 4 directory levels
+alias .5='cd ../../../../../'               # Go back 5 directory levels
+alias .6='cd ../../../../../../'            # Go back 6 directory levels
+alias edit='subl'                           # edit:         Opens any file in sublime editor
+alias f='open -a Finder ./'                 # f:            Opens current directory in MacOS Finder
+alias c='clear'                             # c:            Clear terminal display
+alias path='echo -e ${PATH//:/\\n}'         # path:         Echo all executable Paths
+alias fix_stty='stty sane'                  # fix_stty:     Restore terminal settings when screwed up
+alias cic='set completion-ignore-case On'   # cic:          Make tab-completion case-insensitive
+mcd () { mkdir -p "$1" && cd "$1"; }        # mcd:          Makes new Dir and jumps inside
+trash () { command mv "$@" ~/.Trash ; }     # trash:        Moves a file to the MacOS trash
+
+#   extract:  Extract most know archives with one command
+#   ---------------------------------------------------------
+    extract () {
+        if [ -f $1 ] ; then
+          case $1 in
+            *.tar.bz2)   tar xjf $1     ;;
+            *.tar.gz)    tar xzf $1     ;;
+            *.bz2)       bunzip2 $1     ;;
+            *.rar)       unrar e $1     ;;
+            *.gz)        gunzip $1      ;;
+            *.tar)       tar xf $1      ;;
+            *.tbz2)      tar xjf $1     ;;
+            *.tgz)       tar xzf $1     ;;
+            *.zip)       unzip $1       ;;
+            *.Z)         uncompress $1  ;;
+            *.7z)        7z x $1        ;;
+            *)     echo "'$1' cannot be extracted via extract()" ;;
+             esac
+         else
+             echo "'$1' is not a valid file"
+         fi
+    }
+
+# brew install eza
+if [ -x "$(command -v eza)" ]; then
+    alias ls="eza --icons"
+    alias la="eza --long --all --icons --group-directories-first -h --git --no-filesize"
+    alias lt="eza --tree --level=2 --icons"
+fi
+
+
+# brew install fzf
+# Set up fzf key bindings and fuzzy completion
+if [ -f /opt/homebrew/opt/fzf/shell/completion.zsh ]; then
+  source /opt/homebrew/opt/fzf/shell/completion.zsh
+fi
+
+if [ -f /opt/homebrew/opt/fzf/shell/key-bindings.zsh ]; then
+  source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
+fi
+
+# Use fd instead of find for fzf
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
+
+# Enable bat preview for files (Ctrl+T)
+export FZF_CTRL_T_OPTS="
+  --preview 'bat --color=always --style=numbers --line-range=:500 {}'
+  --bind 'ctrl-/:change-preview-window(down|hidden|)'"
+
+# Enable tree preview for directories (Alt+C)
+export FZF_ALT_C_OPTS="--preview 'eza --tree --level=2 --icons {}'"
+
+# Enhanced CTRL+R history search with preview
+# Shows the full command with timestamp and allows multi-line commands
+export FZF_CTRL_R_OPTS="
+  --preview 'echo {}' --preview-window up:3:hidden:wrap
+  --bind 'ctrl-/:toggle-preview'
+  --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort'
+  --color header:italic
+  --header 'Press CTRL-Y to copy command into clipboard'"
+
+# Better color scheme
+export FZF_DEFAULT_OPTS='
+  --height 40% --layout=reverse --border
+  --color=fg:#d0d0d0,bg:#121212,hl:#5f87af
+  --color=fg+:#d0d0d0,bg+:#262626,hl+:#5fd7ff
+  --color=info:#afaf87,prompt:#d7005f,pointer:#af5fff
+  --color=marker:#87ff00,spinner:#af5fff,header:#87afaf'
+
+# brew install bat
+alias cat='bat'
+
+# brew install prettyping
+alias ping='prettyping --nolegend'
+
+# brew install bpytop
+alias top='bpytop'
+
+# brew install ripgrep
+if command -v rg >/dev/null 2>&1; then
+  alias grep='rg'
+fi
+
+# brew install fd
+if command -v fd >/dev/null 2>&1; then
+  alias find='fd'
+fi
+
+
+
+# brew install tldr
+# No alias needed, just install for quick command help
+
+# brew install git-delta
+if command -v delta >/dev/null 2>&1; then
+  alias diff='delta'
+fi
+
+# Git shortcuts (complementing git plugin)
+alias gst='git status'
+alias gd='git diff'
+alias glg='git log --oneline -n 10'
+
+# Quick config editing
+alias zrc='$EDITOR ~/.zshrc'
+alias src='source ~/.zshrc'
+
+# Enhanced eza listings
+alias ll='eza -lah'
+alias lld='eza -lD'  # Directories only
+
+# brew install thefuck
+# Disabled for faster startup (saves ~120ms)
+# Lazy-load thefuck: run 'enable-thefuck' to activate
+alias enable-thefuck='eval $(thefuck --alias)'
+
+
+#   -----------------------------
+#   4.  Custom env
+#   -----------------------------
+
+# INCREASE HISTORY SIZE
+
+# The file where the history is stored
+HISTFILE="$HOME/.zsh_history"
+# Number of events loaded into memory
+HISTSIZE=100000000
+# Number of events stored in the zsh history file
+SAVEHIST=100000000
+# Do not save duplicate commands to history
+setopt HIST_IGNORE_ALL_DUPS
+# Do not find duplicate command when searching
+setopt HIST_FIND_NO_DUPS
+
+# Enhanced history options
+setopt EXTENDED_HISTORY       # Record timestamp with history
+setopt INC_APPEND_HISTORY     # Append commands as they're typed
+setopt SHARE_HISTORY          # Share history between sessions
+setopt HIST_VERIFY            # Verify history expansion before executing
+setopt HIST_SAVE_NO_DUPS      # Don't save duplicates to file
+
+# Better directory navigation
+setopt AUTO_PUSHD             # cd automatically pushes to directory stack
+setopt PUSHD_IGNORE_DUPS      # Don't duplicate in directory stack
+setopt PUSHD_SILENT           # Don't print stack after pushd/popd
+
+# Improved globbing
+setopt NO_CASE_GLOB           # Case-insensitive globbing
+setopt GLOB_COMPLETE          # Show completions for glob patterns
+
+
+alias ktilt='/usr/local/bin/tilt'
+
+# export MANPATH="/usr/local/man:$MANPATH"
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.node_modules_global/bin:$PATH"
+export PATH="${HOME}/bin:$PATH"
+
+export NVM_DIR="$HOME/.nvm"
+# Lazy load nvm for faster shell startup (~300-500ms improvement)
+nvm() {
+  unset -f nvm node npm npx
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+  nvm "$@"
+}
+node() {
+  unset -f nvm node npm npx
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  node "$@"
+}
+npm() {
+  unset -f nvm node npm npx
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  npm "$@"
+}
+npx() {
+  unset -f nvm node npm npx
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  npx "$@"
+}
+
+
+# Unset manpath so we can inherit from /etc/manpath via the `manpath` command
+unset MANPATH # delete if you already modified MANPATH elsewhere in your config
+export MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
+
+# Ruby set-up
+# brew install rbenv
+# Lazy load rbenv (Ruby not frequently used, ~100-150ms improvement)
+if command -v rbenv >/dev/null 2>&1; then
+  export PATH="$HOME/.rbenv/shims:$PATH"
+  rbenv() {
+    unset -f rbenv
+    eval "$(command rbenv init -)"
+    rbenv "$@"
+  }
+fi
+
+# Go set-up
+export GOPATH="${HOME}/.go"
+export PATH="$PATH:${GOPATH}/bin:${GOROOT}/bin"
+test -d "${GOPATH}" || mkdir "${GOPATH}"
+
+
+# brew install jenv
+# Lazy load jenv for faster shell startup (~400ms improvement)
+export PATH="$HOME/.jenv/bin:$PATH"
+jenv() {
+  unset -f jenv
+  eval "$(command jenv init -)"
+  jenv "$@"
+}
+
+# brew install python3
+# cd ~
+# mkdir ~/.virtualenvs
+# python3 -m venv ~/.virtualenvs/myvenv
+# Disabled auto-activation for faster startup (saves ~30ms)
+# Activate manually when needed with 'pyenv'
+alias pyenv='source ~/.virtualenvs/myvenv/bin/activate'
+
+alias mongod='mongod --config /usr/local/etc/mongod.conf'
+
+# brew install jenv
+export PATH="$HOME/.jenv/bin:$PATH"
+eval "$(jenv init -)"
+# brew install javaj
+export PATH="~/Library/Application Support/Coursier/bin:$PATH"
+
+export CPPFLAGS="-I/opt/homebrew/opt/openjdk/include"
+
+DEFAULT_USER="philippe.stemberger"
+
+# Secrets (Artifactory, Portkey, SonarQube token) loaded from local-only ~/.zsh_secrets
+[ -f "$HOME/.zsh_secrets" ] && source "$HOME/.zsh_secrets"
+export PATH="$HOME/.local/bin:$PATH"
+
+# Added by sonarqube-cli installer
+export PATH="$HOME/.local/share/sonarqube-cli/bin:$PATH"
+export USE_ARTIFACTORY=true
+DEFAULT_USER="philippe.stemberger"
+
+export NODE_EXTRA_CA_CERTS="/Library/Application Support/Cloudflare/installed_cert.pem"
+
+export SONARQUBE_CLI_ORG="sonar-solutions"
+# export SONARQUBE_CLI_ORG="se-sonar-org"
+
+
+# Disable ECC GateGuard fact-forcing hook globally
+export ECC_GATEGUARD=off
+# brew install zoxide
+if command -v zoxide >/dev/null 2>&1; then
+  # Replace 'cd' with zoxide so you can use normal cd command
+  export _ZO_DOCTOR=0
+  eval "$(zoxide init zsh --cmd cd)"
+  # Now 'cd' is smart and tracks frecency
+  # Use 'cdi' for interactive selection
+fi
+
+# Initialize Starship prompt (MUST be at the end after everything loads)
+# This updates the instant prompt with fresh data
+# To customize prompt, edit ~/.config/starship.toml
+eval "$(starship init zsh)"
+
+# cmux
+export PATH="/Users/philippe.stemberger/.cmux/bin:$PATH"
