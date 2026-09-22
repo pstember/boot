@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/manaflow-ai/cmux/main/web/data/cmux.schema.json",
   "schemaVersion": 1,
 
-  "paneBorderColor": "#6E6E6E",
+  "paneBorderColor": "#8A8A8A",
   "activePaneBorderColor": "#FF9500",
 
   // This file uses JSON with comments (JSONC).
