@@ -346,7 +346,10 @@ export PATH="$HOME/.local/share/sonarqube-cli/bin:$PATH"
 export USE_ARTIFACTORY=true
 DEFAULT_USER="philippe.stemberger"
 
-export NODE_EXTRA_CA_CERTS="/Library/Application Support/Cloudflare/installed_cert.pem"
+# Cloudflare WARP CA (only when installed; Node warns on a missing file)
+_cf_cert="/Library/Application Support/Cloudflare/installed_cert.pem"
+[ -f "$_cf_cert" ] && export NODE_EXTRA_CA_CERTS="$_cf_cert"
+unset _cf_cert
 
 export SONARQUBE_CLI_ORG="sonar-solutions"
 # export SONARQUBE_CLI_ORG="se-sonar-org"
