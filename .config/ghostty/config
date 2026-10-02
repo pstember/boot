@@ -9,4 +9,3 @@ background-opacity = 1.0
 
 # Performance
 scrollback-limit = 10000
-frame-rate = 60
